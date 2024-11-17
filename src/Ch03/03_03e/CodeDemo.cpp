@@ -26,6 +26,12 @@ public:
     void set_age(int new_age){
         age = new_age;
     }
+    void set_name(std::string new_name){
+        name = new_name;
+    }
+    void set_purpose(cow_purpose new_purpose){
+        purpose = new_purpose;
+    }
 private:
     std::string name;
     int age;
@@ -34,6 +40,8 @@ private:
 
 int main(){
     cow my_cow("Hildy", 7, cow_purpose::pet);
+    my_cow.set_age(10);
+    my_cow.set_purpose(cow_purpose::meat);
     std::cout << my_cow.get_name() << " is a type-" << (int) my_cow.get_purpose() << " cow." << std::endl;
     std::cout << my_cow.get_name() << " is " << my_cow.get_age() << " years old." << std::endl;
     
