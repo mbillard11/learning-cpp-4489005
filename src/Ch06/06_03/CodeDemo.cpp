@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <vector>
+#include <fstream>
 #include "records.h"
 
 void initialize(StudentRecords&);
@@ -17,25 +18,65 @@ int main(){
     std::cout << "Enter a student ID: " << std::flush;
     std::cin >> id;
 
-    SR.report_card(id);
+    SR.write_report_card();
     
     std::cout << std::endl << std::endl;
     return (0);
 }
 
 void initialize(StudentRecords& srec){
-    srec.add_student(1, "George P. Burdell");
-    srec.add_student(2, "Nancy Rhodes");
+    std::ifstream inFile;
+    std::string str;
+    int sid;
+    std::string sname;
+    int cid;
+    std::string cname;
+    int credits;
+    char grade;
 
-    srec.add_course(1, "Algebra", 5);
-    srec.add_course(2, "Physics", 4);
-    srec.add_course(3, "English", 3);
-    srec.add_course(4, "Economics", 4);
+    inFile.open("students.txt");
+    if (inFile.fail())
+        std::cout << std::endl << "File not found!" << std::endl;
+    else{
+        while (!inFile.eof()){
+            getline(inFile, str);
+            sid = stoi(str);
+            getline(inFile, str);
+            sname = str;
+            srec.add_student(sid, sname);
+        }
+        inFile.close();
+    }
 
-    srec.add_grade(1, 1, 'B');
-    srec.add_grade(1, 2, 'A');
-    srec.add_grade(1, 3, 'C');
-    srec.add_grade(2, 1, 'A'); 
-    srec.add_grade(2, 2, 'A');
-    srec.add_grade(2, 4, 'B');
+    inFile.open("courses.txt");
+    if (inFile.fail())
+        std::cout << std::endl << "File not found!" << std::endl;
+    else{
+        while (!inFile.eof()){
+            getline(inFile, str);
+            cid = stoi(str);
+            getline(inFile, str);
+            cname = str;
+            getline(inFile, str);
+            credits = stoi(str);
+            srec.add_course(cid, cname, credits);
+        }
+        inFile.close();
+    }
+
+    inFile.open("grades.txt");
+    if (inFile.fail())
+        std::cout << std::endl << "File not found!" << std::endl;
+    else{
+        while (!inFile.eof()){
+            getline(inFile, str);
+            sid = stoi(str);
+            getline(inFile, str);
+            cid = stoi(str);
+            getline(inFile, str);
+            grade = str[0];
+            srec.add_grade(sid, cid, grade);
+        }
+        inFile.close();
+    }
 }
